@@ -1,32 +1,23 @@
 // Toggle button section
 
 document.addEventListener("DOMContentLoaded", function () {
-  const toggleSwitch = document.querySelector(".toggle-switch input");
+    const toggleSwitch = document.querySelector(".toggle-switch input");
 
-  toggleSwitch.addEventListener("change", function () {
-    if (this.checked) {
-      console.log("Switch is ON");
-      chrome.storage.sync.set({ toggleState: true });
-      // Send message to content.js
-      chrome.runtime.sendMessage({ action: "toggleUpdate", toggleValue: true });
-    } else {
-      console.log("Switch is OFF");
-      chrome.storage.sync.set({ toggleState: false });
-      // Send message to content.js
-      chrome.runtime.sendMessage({
-        action: "toggleUpdate",
-        toggleValue: false,
-      });
-    }
-  });
+    toggleSwitch.addEventListener("change", function () {
+        if (this.checked) {
+            console.log("Display Goose");
+            chrome.storage.sync.set({ displayGoose: true });
+        } else {
+            console.log("Don't Display Goose");
+            chrome.storage.sync.set({ displayGoose: false });
+        }
+    });
 });
 
 chrome.storage.sync.get(["toggleState"], function (result) {
-  const value1 = result.toggleState;
-  // Do something with the retrieved values
-  console.log("toggel state:", value1);
-  const toggleSwitch = document.querySelector(".toggle-switch input");
-  toggleSwitch.checked = value1;
-  // Send message to content.js
-  // chrome.runtime.sendMessage({ action: "toggleUpdate", toggleValue: true});
+    const value1 = result.toggleState;
+    // Do something with the retrieved values
+    console.log("toggle state:", value1);
+    const toggleSwitch = document.querySelector(".toggle-switch input");
+    toggleSwitch.checked = value1;
 });

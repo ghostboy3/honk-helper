@@ -80,20 +80,35 @@ var buttonStyle = `
 var styleElement = document.createElement("style");
 styleElement.innerHTML = buttonStyle;
 
-chrome.storage.sync.get(["toggleState"], function (result) {
-  const value1 = result.toggleState;
-  // Do something with the retrieved values
-  console.log("toggel state:", value1);
-  if (value1) {
-    button = document.getElementById("extensionButton");
-    button.style.display = "block";
-  } else {
-    button = document.getElementById("extensionButton");
-    button.style.display = "none";
-  }
+chrome.storage.sync.get(["displayGoose"], function (result) {
+    const value1 = result.toggleState;
+    // Do something with the retrieved values
+    console.log("displayGoose", value1);
+    if (value1) {
+        button = document.getElementById("extensionButton");
+        button.style.display = "block";
+
+    } else {
+        button = document.getElementById("extensionButton");
+        button.style.display = "none";
+    }
 });
 
 
 // Adding Goose
 document.head.appendChild(styleElement);
 
+var goose = document.createElement('div');
+var s = goose.style;
+
+s.position = 'fixed';
+s.top = '100px';
+s.left = '100px';
+s.width = '100px';
+s.height = '100px';
+s.pointerEvents = 'none';
+s.backgroundColor = 'red';
+
+goose.id = "goose";
+console.log("honk");
+document.body.appendChild(goose);
