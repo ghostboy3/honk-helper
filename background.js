@@ -8,38 +8,83 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const tab = await chrome.tabs.get(activeInfo.tabId);
+  if (tab.url) {
+    trackTime(tab.url);
+  }
+});
 
-// // Track time
-// let activeTabId = null;
-// let activeTabStartTime = null;
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' && tab.url) {
+    trackTime(tab.url);
+  }
+});
 
-// chrome.tabs.onActivated.addListener(async (activeInfo) => {
-//   const previousTabId = activeTabId;
-//   activeTabId = activeInfo.tabId;
+function trackTime(url) {
+  const now = new Date().getTime();
+  chrome.storage.local.get(["currentWebsite", "startTime"], (data) => {
+    const { currentWebsite, startTime } = data;
+    if (currentWebsite && startTime) {
+      const timeSpent = now - startTime;
+      console.log(`Time spent on ${currentWebsite}: ${timeSpent} ms`);
+    }
+    chrome.storage.local.set({ currentWebsite: url, startTime: now });
+  });
+}
 
-//   if (previousTabId !== null) {
-//     const timeSpent = Date.now() - activeTabStartTime;
-//     await saveTime(previousTabId, timeSpent);
-//   }
+// // // Track time
+// chrome.storage.local.set({"HIII": "huulooooopooooooooooo"})
+// let currentWebsite = '';
+// let startTime = 0;
 
-//   activeTabStartTime = Date.now();
+// chrome.tabs.onActivated.addListener(activeInfo => {
+//   chrome.tabs.get(activeInfo.tabId, tab => {
+//     handleWebsiteChange(tab.url);
+//   });
 // });
 
-// chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-//   if (tabId === activeTabId && changeInfo.status === 'complete') {
-//     const timeSpent = Date.now() - activeTabStartTime;
-//     await saveTime(tabId, timeSpent);
-//     activeTabStartTime = Date.now();
+// chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+//   if (changeInfo.status === 'complete') {
+//     handleWebsiteChange(tab.url);
 //   }
 // });
 
-// async function saveTime(tabId, timeSpent) {
-//   const tab = await chrome.tabs.get(tabId);
-//   const url = new URL(tab.url);
-//   const hostname = url.hostname;
+// function handleWebsiteChange(url) {
+//   const website = new URL(url).hostname;
 
-//   chrome.storage.local.get([hostname], (result) => {
-//     const totalTime = (result[hostname] || 0) + timeSpent;
-//     chrome.storage.local.set({ [hostname]: totalTime });
+//   if (website !== currentWebsite) {
+//     if (currentWebsite) {
+//       const timeSpent = (Date.now() - startTime) / 1000;
+//       saveTimeSpent(currentWebsite, timeSpent);
+//     }
+
+//     currentWebsite = website;
+//     startTime = Date.now();
+//     chrome.storage.local.set({currentWebsite, startTime}).then((result) => {
+//       console.log("Value is " + result.key);
+//     });
+//   }
+// }
+
+// function saveTimeSpent(website, timeSpent) {
+//   chrome.storage.local.get([website], data => {
+//     const totalTime = (data[website] || 0) + timeSpent;
+//     chrome.storage.local.set({[website]: totalTime})({currentWebsite, startTime}).then((result) => {
+//       console.log("Value is " + result.key);
+//     });
 //   });
 // }
+
+// chrome.runtime.onStartup.addListener(() => {
+//   chrome.storage.local.get(['currentWebsite', 'startTime'], data => {
+//     if (data.currentWebsite && data.startTime) {
+//       currentWebsite = data.currentWebsite;
+//       startTime = data.startTime;
+//     }
+//   });
+// });
+
+// chrome.runtime.onInstalled.addListener(() => {
+//   chrome.storage.local.clear();
+// });
