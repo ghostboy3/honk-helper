@@ -1,4 +1,5 @@
 // Adding Goose
+
 const img = document.createElement('img');
 img.src = chrome.runtime.getURL('assets/goos.png');
 img.style.position = 'fixed';
