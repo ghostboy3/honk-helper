@@ -1,3 +1,4 @@
+
 let activeTabId = null;
 let activeTabStartTime = null;
 
