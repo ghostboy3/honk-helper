@@ -1,20 +1,34 @@
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
-    if (message.action === "openNewTab") {
-      var url = chrome.runtime.getURL('data.html') + '?id=' + encodeURIComponent(message.id)+'&token='+encodeURIComponent(message.token)+'&title='+encodeURIComponent(message.title)+'&baseurl='+encodeURIComponent(message.baseurl);
-      // var url = chrome.runtime.getURL('http://127.0.0.1:5500/index.html')
-      // var url = 'localhost:3000' + '?id=' + encodeURIComponent(message.id)+'&token='+encodeURIComponent(message.token)+'&title='+encodeURIComponent(message.title)+'&baseurl='+encodeURIComponent(message.baseurl);
+let activeTabId = null;
+let activeTabStartTime = null;
 
-      chrome.tabs.create({ url: url });
-    }
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const previousTabId = activeTabId;
+  activeTabId = activeInfo.tabId;
 
-    if (message.action == "toggleUpdate"){
-      // console.log(message.toggleValue);
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        // Send a message to the content script of the active tab
-        chrome.tabs.sendMessage(tabs[0].id, message.toggleValue);
-      });
-    }
+  if (previousTabId !== null) {
+    const timeSpent = Date.now() - activeTabStartTime;
+    await saveTime(previousTabId, timeSpent);
+  }
+
+  activeTabStartTime = Date.now();
+});
+
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (tabId === activeTabId && changeInfo.status === 'complete') {
+    const timeSpent = Date.now() - activeTabStartTime;
+    await saveTime(tabId, timeSpent);
+    activeTabStartTime = Date.now();
+  }
+});
+
+async function saveTime(tabId, timeSpent) {
+  const tab = await chrome.tabs.get(tabId);
+  const url = new URL(tab.url);
+  const hostname = url.hostname;
+
+  chrome.storage.local.get([hostname], (result) => {
+    const totalTime = (result[hostname] || 0) + timeSpent;
+    chrome.storage.local.set({ [hostname]: totalTime });
   });
-
-  
+}

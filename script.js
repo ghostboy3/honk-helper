@@ -21,3 +21,22 @@ chrome.storage.sync.get(["toggleState"], function (result) {
     const toggleSwitch = document.querySelector(".toggle-switch input");
     toggleSwitch.checked = value1;
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.local.get(null, (items) => {
+    const websitesDiv = document.getElementById('websites');
+    for (const [hostname, time] of Object.entries(items)) {
+      const websiteDiv = document.createElement('div');
+      websiteDiv.className = 'website';
+      websiteDiv.textContent = `${hostname}: ${formatTime(time)}`;
+      websitesDiv.appendChild(websiteDiv);
+    }
+  });
+});
+
+function formatTime(ms) {
+  const seconds = Math.floor(ms / 1000) % 60;
+  const minutes = Math.floor(ms / (1000 * 60)) % 60;
+  const hours = Math.floor(ms / (1000 * 60 * 60));
+  return `${hours}h ${minutes}m ${seconds}s`;
+}
