@@ -1,22 +1,4 @@
 // Toggle button section
-// Check if the storage is empty
-chrome.storage.sync.get("toggleState", function (result) {
-  let toggleStateValue = result.toggleState;
-
-  // Check if the value is empty or undefined
-  if (toggleStateValue === undefined || toggleStateValue === "") {
-    // Set a default value if it's empty
-
-    // Update the value in chrome.storage
-    chrome.storage.sync.set({ toggleStateValue: false }, function () {
-      console.log("Value set to default:"); //, yourValue);
-    });
-    // Send message to content.js
-    chrome.runtime.sendMessage({ action: "toggleUpdate", toggleValue: false });
-  } else {
-    console.log("Value already exists:"); //, yourValue);
-  }
-});
 
 document.addEventListener("DOMContentLoaded", function () {
   const toggleSwitch = document.querySelector(".toggle-switch input");

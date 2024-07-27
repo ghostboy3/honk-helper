@@ -6,7 +6,7 @@
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
-    "default_icon": "aCheckIcon.png"
+    "default_icon": "gooseIcon.jpg"
   },
   "background": {
     "service_worker": "background.js"
@@ -26,6 +26,6 @@
     }
   ],
   "icons":{
-    "128": "aCheckIcon.png"
+    "128": "gooseIcon.jpg"
   }
 }
