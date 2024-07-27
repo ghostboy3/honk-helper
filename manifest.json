@@ -21,11 +21,13 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["gooseIcon.jpg"],
+      "resources": ["assets/*"],
       "matches": ["<all_urls>"]
     }
   ],
-  "icons":{
-    "128": "gooseIcon.jpg"
+    
+  "icons": {
+    "128": "/assets/goos.png"
   }
+
 }
