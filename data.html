@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aidify Report</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="loading-overlay" style="display: none">
+        <img id="shark" src="sharkLoad.gif" alt="shark loading" />
+        <div id="loading-message">Loading...</div>
+    </div>
+
+    <h1 id="title">
+      Error Occured - Make sure you have edit access to the document or try
+      again
+    </h1>
+    <hr />
+    <div class="ReplayEdits">
+      <h1 id="replayEditsTitle">Video Replay of Edits</h1>
+
+      <label class="text"  for="userDropdownReplay">Highlight User:</label>
+      <select id="userDropdownReplay">
+        <option value="default">None</option>
+      </select>
+      <span class="tooltip"><h2>ⓘ</h2>
+        <span class="tooltiptext">Select a user - <br> Their edits will appear <span class="insertHighlight">green</span>.<br> All other edits will appear <span class="insert">yellow</span>.</span>
+      </span>
+      <!-- <div class="toggle-switch">
+        <input type="checkbox" id="switch" class="switch-input">
+        <label for="switch" class="switch-label"></label>
+    </div> -->
+
+
+      <br>
+      <div class="controls">
+        <input type="range" id="playbackSlider" />
+
+        <label for="speedDropdown">Speed:&nbsp;</label>
+        <select id="speedDropdown">
+          <option value="0.5">1 (slowest)</option>
+          <option value="1">2</option>
+          <option value="1.5" selected>3</option>
+          <option value="2">4</option>
+          <option value="2.5">5</option>
+          <option value="3">6</option>
+          <option value="3.5">7</option>
+          <option value="4">8</option>
+          <option value="4.5">9</option>
+          <option value="5">10 (fastest)</option>
+        </select>
+        <button id="playButton">Play</button>  
+      </div>
+      
+
+      <p id="date"></p>
+      <div id="playback"></div>
+      <!-- <div id="editor"></div> -->
+
+      <!-- <button id="playPause">Play</button> -->
+    </div>
+
+
+    <hr />
+    <h1>Writing Report For <span id="reportUser">All Users</span></h1>
+    <!-- <p>Select User:</p> -->
+    <label class="text" for="userDropdownReport">Select User:</label>
+    <select id="userDropdownReport">
+      <option value="default">All Users</option>
+    </select>
+    <br />
+    <div id="stats">
+      <h2>Document Stats For <span class="reportUser">All Users</span></h2>
+      <p class="stat" id="wordCount"></p>
+      <p class="stat" id="deletes"></p>
+      <p class="stat" id="timeSpent"></p>
+      <p class="stat" id="revisions"></p>
+    </div>
+    <br />
+    <div id="copyPaste">
+      <h2 id="copyPasteTitle">
+        Large External Copy/Pasted Text For <span class="reportUser">All Users</span> <span id="numCopy"></span> <span class="tooltip"><h3>ⓘ</h3>
+          <span class="tooltiptext">Text copied from an external source and pasted in the document.</span>
+        </span>
+      </h2>
+      <div class="card-container" id="cardContainer"></div>
+      <button id="showAllButton">Show All</button>
+      <button id="hideAllButton" style="display: none">Hide</button>
+    </div>
+    <br />
+    <!-- <div id="writingSessions"></div> -->
+    <div id="writingGraph">
+      <h2>Graph of Edits by Date For <span class="reportUser">All Users</span> <span class="tooltip"><h3>ⓘ</h3>
+        <span class="tooltiptext">Graph shows the total number of changes made to the document, <br>e.g., characters typed, deletions.<br>Pasting text counts as one edit.</span>
+      </span></h2>
+      <p class="text">Click on a bar to view the time breakdown of edits for that day.</p>
+      <canvas id="dateChart" style="width: 100%; max-width: 600px"></canvas>
+
+      <h2>Graph of Edits by Hour For <span class="reportUser">All Users</span> on <span id="graphDateValue">All Dates</span></h2>
+      <button id="timeChartBtn">View for All Dates</button>
+      <canvas id="timeChart" style="width: 100%; max-width: 600px"></canvas>
+
+      <br>
+      <h2>Graph of Time Spent Per Day For <span class="reportUser">All Users</span></h2>
+      <canvas id="timePerDayChart" style="width: 100%; max-width: 600px"></canvas>
+
+    </div>
+    <br />
+    <div id="writingSessions">
+      <h2>Writing Sessions For <span class="reportUser">All Users</span> <span id="numWritingSessions"></span></h2>
+      <p class="text">
+        A period of writing with no more than a 10 minute break.
+      </p>
+      <div id="writingSessionsCards"></div>
+      <button id="seeAllButton">See All</button>
+      <button id="hideButton" style="display: none">Hide</button>
+    </div>
+    <script src="chart.js"></script>
+    <script src="dataPage.js"></script>
+  </body>
+</html>
