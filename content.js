@@ -6,6 +6,7 @@ const importfr = (path) => {
 }
 
 const Honk = new Audio(importfr('honk.mp3'));
+
 const goosL = chrome.runtime.getURL('assets/goosL.png');
 const goosR = chrome.runtime.getURL('assets/goosR.png');
 const GoosWalkingL = chrome.runtime.getURL('assets/GoosWalkingL.gif');
@@ -23,7 +24,13 @@ img.style.backgroundSize = 'cover';
 img.style.display = 'block';
 img.style.alt = 'Loading...';
 img.id = 'goose'
-document.body.appendChild(img);
+
+if (document.getElementById('goose')) {
+  console.log("Element with ID 'goose' found.");
+} else {
+  console.log("Element with ID 'goose' not found.");
+  document.body.appendChild(img);
+}
 
 function honk() {
     Honk.play();
@@ -51,8 +58,10 @@ function moveGoose(img, x, y) {
         } else {
             if (gooseX > x) {
                 gooseX--;
+                // console.log("moving");
             } else if (gooseX < x) {
                 gooseX++;
+                // console.log("moving");
             }
 
             if (gooseY > y) {
@@ -67,7 +76,18 @@ function moveGoose(img, x, y) {
     }, 25);
 }
 
+function resetGoose(img){
+  img.style.right = '10px';
+  img.style.bottom =  '10px';
+  console.log("RESET");
+}
+resetGoose(img)
+
 setInterval(() =>{
+  // resetGoose(img)
+  if (document.hasFocus()) {
+
+  console.log("moved");
     moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
 }, 5000)
 

@@ -15,41 +15,18 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   const tab = await chrome.tabs.get(activeInfo.tabId);
   if (tab.url) {
-    trackTime(tab.url);
+    checkAndTrackTime(tab.url);
   }
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url) {
-    stopTimer(tab);
-    trackTime(tab.url);
+    checkAndTrackTime(tab.url);
   }
 });
 
-chrome.tabs.onRemoved.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete' && tab.url) {
-    stopTimer(tab);
-  }
-});
-
-chrome.windows.onRemoved.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete' && tab.url) {
-    stopTimer(tab);
-  }
-});
-
-function stopTimer(tab){
-  if(!blacklist.includes(new URL(tab.url).hostname)){
-    var currentRunningTime;
-
-    chrome.storage.local.get('startTime', (data) => {
-      currentRunningTime = new Date().getTime() - data.startTime;
-    });
-
-    chrome.storage.local.get('workingTime',(data) => {
-      chrome.storage.local.set({ workingTime: data.workingTime + currentRunningTime});
-    });
-  }
+function checkAndTrackTime(url) {
+  trackTime(url);
 }
 
 function trackTime(url) {
@@ -63,3 +40,27 @@ function trackTime(url) {
     chrome.storage.local.set({ currentWebsite: url, startTime: now });
   });
 }
+
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === 'local' && changes.badWebsites) {
+    updateRules();
+  }
+});
+
+function updateRules() {
+  chrome.storage.local.get("badWebsites", (data) => {
+    const badWebsites = data.badWebsites || [];
+    const rules = badWebsites.map((badUrl, index) => ({
+      id: index + 1,
+      priority: 1,
+      action: { type: "block" },
+      condition: { urlFilter: badUrl, resourceTypes: ["main_frame"] }
+    }));
+    chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: rules.map(rule => rule.id),
+      addRules: rules
+    });
+  });
+}
+
+updateRules();
