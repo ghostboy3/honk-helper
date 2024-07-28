@@ -1,4 +1,18 @@
 // Geese image
+
+const blacklist = ['instagram.com','discord.com','youtube.com','twitter.com','facebook.com','twitch.tv'];
+
+const importfr = (path) => {
+  return chrome.runtime.getURL('assets/' + path)
+}
+const Honk = new Audio(importfr('honk.mp3'));
+
+function honk() {
+  Honk.play();
+}
+
+var loop;
+
 chrome.runtime.onInstalled.addListener(() => {
   chrome.action.onClicked.addListener((tab) => {
     chrome.scripting.executeScript({
@@ -7,8 +21,6 @@ chrome.runtime.onInstalled.addListener(() => {
     });
   });
 });
-
-
 // timer
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   const tab = await chrome.tabs.get(activeInfo.tabId);
@@ -63,3 +75,10 @@ function updateRules() {
 
 updateRules();
 
+<<<<<<< HEAD
+=======
+setInterval(() => {
+  honk();
+  console.log('honk');
+}, 10000);
+>>>>>>> 6bff6f6247f47272480f2e234fdcde05d408178f
