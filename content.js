@@ -1,4 +1,8 @@
 // Adding Goose
+
+const importfr = (path) => {
+    return chrome.runtime.getURL('assets/' + path)
+}
 const goosL = chrome.runtime.getURL('assets/goosL.png');
 const goosR = chrome.runtime.getURL('assets/goosR.png');
 const GoosWalkingL = chrome.runtime.getURL('assets/GoosWalkingL.gif');
@@ -38,10 +42,8 @@ function moveGoose(img, x, y) {
         } else {
             if (gooseX > x) {
                 gooseX--;
-                console.log("moving");
             } else if (gooseX < x) {
                 gooseX++;
-                console.log("moving");
             }
 
             if (gooseY > y) {
@@ -55,7 +57,6 @@ function moveGoose(img, x, y) {
         }
     }, 25);
 }
-
 setInterval(() =>{
     moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
 }, 5000)
