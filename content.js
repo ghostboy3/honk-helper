@@ -22,6 +22,18 @@ if (document.getElementById('goose')) {
   console.log("Element with ID 'goose' not found.");
   document.body.appendChild(img);
 }
+chrome.storage.sync.get(["toggleState"], function (result) {
+  const value1 = result.toggleState;
+  // Do something with the retrieved values
+  console.log("toggel state:", value1);
+  if (value1) {
+    goose = document.getElementById("goose");
+    button.style.display = "block";
+  } else {
+    goose = document.getElementById("goose");
+    goose.style.display = "none";
+  }
+});
 
 function moveGoose(img, x, y) {
     let gooseX = Number(img.style.right.substring(0, img.style.right.length-2));
@@ -75,3 +87,17 @@ setInterval(() =>{
     moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
   }
 }, 5000)
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("Received message from background:", message);
+  //
+  if (!message) {
+    goose = document.getElementById("goose");
+    goose.style.display = "none";
+  }
+  if (message) {
+    location.reload();
+    bgoose = document.getElementById("goose");
+    button.style.display = "block";
+  }
+});
