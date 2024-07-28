@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+
 body {
   width: 250px;
-  height: 280px;
+  height: 290px;
   text-align: center;
-}
+  background-image: url('https://media.istockphoto.com/id/1480217147/vector/green-cartoon-meadow-sun-hills-horizon-vector-illustration.jpg?s=612x612&w=0&k=20&c=aKu5mzY4IhOu70-S6KQfgxU6dkZKF8L3yLmDqFQhY3Q=');
+  background-size: contain;
+  background-repeat: no-repeat;}
 
 /* Sign in with google btn */
 .login-with-google-btn {
@@ -17,7 +21,7 @@ body {
   font-size: 14px;
   font-weight: 500;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    Ubuntu, Cantarell, "Comic Sans", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 
   background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
   background-color: white;
@@ -46,20 +50,23 @@ body {
   }
 }
 
+/* Background box for text */
+
 /* Hide the default checkbox */
 .toggle-switch input {
   display: none;
 }
 
-/* Style the slider */
+
+/*Style the slider*/
 .slider {
   position: relative;
   display: inline-block;
-  margin-bottom: 50px;
-  width: 60px;
-  height: 34px;
+  margin-bottom: 40px;
+  width: 50px;
+  height: 24px;
   background-color: #ccc;
-  border-radius: 34px;
+  border-radius: 24px;
   transition: background-color 0.3s ease;
 }
 
@@ -67,8 +74,8 @@ body {
 .slider::before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 16px;
+  width: 16px;
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -87,4 +94,13 @@ input:checked + .slider:before {
 
 p {
   margin-bottom: 5px;
+}
+
+img {
+  position: absolute;
+  max-width: 10%;
+  max-height: 10%;
+  top: 0.33em;
+  left: 5em;
+  z-index: -1;
 }
