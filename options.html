@@ -2,18 +2,13 @@
 <html>
   <head>
     <title>Options</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        width: 300px;
-        padding: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="options.css">
   </head>
   <body>
-    <h1>Blocked Websites</h1>
-    <input type="text" id="website" placeholder="Enter website URL">
-    <button id="addBtn">Add</button>
+    <h1 class = "center" style = "font-family: Bona Nova">Blocked Websites</h1>
+    <input class = "input" type= "text" id="website" style = "font-family: Bona Nova" placeholder="ENTER WEBSITE URL">
+    <button class = "button" id="addBtn">Add</button>
+    <h2 class = "instructions" style = "font-family: Bona Nova">Please enter the website URL you wish to be blocked. </h2>
     <ul id="badWebsitesList"></ul>
     <script src="options.js"></script>
   </body>
