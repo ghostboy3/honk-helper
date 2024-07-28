@@ -6,7 +6,8 @@ body {
   height: 200px;
   text-align: center;
   background-image: url('https://media.istockphoto.com/id/1480217147/vector/green-cartoon-meadow-sun-hills-horizon-vector-illustration.jpg?s=612x612&w=0&k=20&c=aKu5mzY4IhOu70-S6KQfgxU6dkZKF8L3yLmDqFQhY3Q=');
-  background-size: contain;
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
 }
 
