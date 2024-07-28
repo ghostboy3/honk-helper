@@ -92,6 +92,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Received message from background:", message);
   //
   if (!message) {
+    location.reload();
     goose = document.getElementById("goose");
     goose.style.display = "none";
   }
