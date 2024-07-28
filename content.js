@@ -111,7 +111,7 @@ function sleep(){
         l2 = setTimeout(() =>{
             console.log('wake up');
             img.src = wakeUpL;
-        },10000);
+        },300000);
     }else{
         img.src = lieDownR;
         console.log('zz');
@@ -121,11 +121,11 @@ function sleep(){
         l2 =setTimeout(() =>{
             console.log('wake up');
             img.src = wakeUpR;
-        },10000);
+        },300000);
     }
     l3 = setTimeout(() =>{
         img.src = endPic;
-    },11000);
+    },301000);
 }
 
 setInterval(() => {
@@ -141,8 +141,8 @@ setInterval(() => {
         const { currentWebsite, startTime } = data;
         console.log(new URL(currentWebsite).hostname);
         if(blacklist.includes(new URL(currentWebsite).hostname)){
-            if(new Date().getTime() - startTime > 10000) {
-                honk();
+            if(new Date().getTime() - startTime > 300000) {
+                Honk.play();
                 startTime = startTime - 2000;
                 chrome.storage.local.set({ startTime: startTime });
             }else if(new Date().getTime() - startTime < 101){
