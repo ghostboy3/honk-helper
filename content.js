@@ -1,17 +1,8 @@
 // Adding Goose
-const blacklist = ['www.instagram.com','discord.com','m.youtube.com','x.com','m.facebook.com','www.twitch.tv', 'www.reddit.com'];
-
-const importfr = (path) => {
-    return chrome.runtime.getURL('assets/' + path)
-}
-
-const Honk = new Audio(importfr('honk.mp3'));
-
 const goosL = chrome.runtime.getURL('assets/goosL.png');
 const goosR = chrome.runtime.getURL('assets/goosR.png');
 const GoosWalkingL = chrome.runtime.getURL('assets/GoosWalkingL.gif');
 const GoosWalkingR = chrome.runtime.getURL('assets/GoosWalkingR.gif');
-var endPic = goosL;
 const img = document.createElement('img');
 img.src = goosL;
 img.style.position = 'fixed';
@@ -31,17 +22,24 @@ if (document.getElementById('goose')) {
   console.log("Element with ID 'goose' not found.");
   document.body.appendChild(img);
 }
-
-function honk() {
-    Honk.play();
-    console.log('honk');
-
-    img.src = endPic;
-}
+chrome.storage.sync.get(["toggleState"], function (result) {
+  const value1 = result.toggleState;
+  // Do something with the retrieved values
+  console.log("toggel state:", value1);
+  if (value1) {
+    goose = document.getElementById("goose");
+    button.style.display = "block";
+  } else {
+    goose = document.getElementById("goose");
+    goose.style.display = "none";
+  }
+});
 
 function moveGoose(img, x, y) {
     let gooseX = Number(img.style.right.substring(0, img.style.right.length-2));
     let gooseY = Number(img.style.bottom.substring(0, img.style.bottom.length-2));
+
+    var endPic;
 
     if (gooseX > x) {
         endPic = goosR;
@@ -75,30 +73,32 @@ function moveGoose(img, x, y) {
         }
     }, 25);
 }
-
 function resetGoose(img){
   img.style.right = '10px';
   img.style.bottom =  '10px';
   console.log("RESET");
 }
 resetGoose(img)
-
 setInterval(() =>{
   // resetGoose(img)
   if (document.hasFocus()) {
 
   console.log("moved");
     moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
+  }
 }, 5000)
 
-setInterval(() => {
-    chrome.storage.local.get(["currentWebsite", "startTime"], (data) => {
-        const { currentWebsite, startTime } = data;
-        console.log(new URL(currentWebsite).hostname);
-        if(new Date().getTime() - startTime > 600000 && blacklist.includes(new URL(currentWebsite).hostname)) {
-            honk();
-            startTime = startTime - 2000;
-            chrome.storage.local.set({ startTime: startTime });
-        }
-    })
-}, 100)
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log("Received message from background:", message);
+  //
+  if (!message) {
+    location.reload();
+    goose = document.getElementById("goose");
+    goose.style.display = "none";
+  }
+  if (message) {
+    location.reload();
+    bgoose = document.getElementById("goose");
+    button.style.display = "block";
+  }
+});

@@ -64,3 +64,16 @@ function updateRules() {
 }
 
 updateRules();
+
+//goose display
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+
+
+  if (message.action == "toggleUpdate"){
+    // console.log(message.toggleValue);
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      // Send a message to the content script of the active tab
+      chrome.tabs.sendMessage(tabs[0].id, message.toggleValue);
+    });
+  }
+});
