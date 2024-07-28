@@ -1,12 +1,17 @@
 // Adding Goose
+const blacklist = ['instagram.com','discord.com','youtube.com','twitter.com','facebook.com','twitch.tv', 'reddit.com'];
 
 const importfr = (path) => {
     return chrome.runtime.getURL('assets/' + path)
 }
+
+const Honk = new Audio(importfr('honk.mp3'));
+var canMove = true;
 const goosL = chrome.runtime.getURL('assets/goosL.png');
 const goosR = chrome.runtime.getURL('assets/goosR.png');
 const GoosWalkingL = chrome.runtime.getURL('assets/GoosWalkingL.gif');
 const GoosWalkingR = chrome.runtime.getURL('assets/GoosWalkingR.gif');
+var endPic = goosL;
 const img = document.createElement('img');
 img.src = goosL;
 img.style.position = 'fixed';
@@ -21,11 +26,20 @@ img.style.alt = 'Loading...';
 img.id = 'goose'
 document.body.appendChild(img);
 
+function honk() {
+    if(endPic.substring(endPic.length-1) == 'L'){
+        img.src = importfr('HonkL.gif');
+    }else{
+        img.src = importfr('HonkR.gif');
+    }
+    Honk.play();
+
+    img.src = endPic;
+}
+
 function moveGoose(img, x, y) {
     let gooseX = Number(img.style.right.substring(0, img.style.right.length-2));
     let gooseY = Number(img.style.bottom.substring(0, img.style.bottom.length-2));
-
-    var endPic;
 
     if (gooseX > x) {
         endPic = goosR;
@@ -36,7 +50,7 @@ function moveGoose(img, x, y) {
     }
 
     let intervalId = setInterval(function() {
-        if (Math.abs(gooseX - x) <= 1 && Math.abs(gooseY - y) <= 1) {
+        if (Math.abs(gooseX - x) <= 1 && Math.abs(gooseY - y) <= 1 && canMove) {
             img.src = endPic;
             clearInterval(intervalId);
         } else {
@@ -57,6 +71,23 @@ function moveGoose(img, x, y) {
         }
     }, 25);
 }
+
 setInterval(() =>{
-    moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
+    if(canMove){
+        moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
+    }
+    canMove = true;
 }, 5000)
+
+setInterval(() => {
+    chrome.storage.local.get(["currentWebsite", "startTime"], (data) => {
+        const { currentWebsite, startTime } = data;
+        console.log(new URL(currentWebsite).hostname);
+        if(new Date().getTime() - startTime > 6000) {
+            honk();
+            startTime = startTime - 2000;
+            chrome.storage.local.set({ startTime: startTime });
+            canMove = false;
+        }
+    })
+}, 500)
