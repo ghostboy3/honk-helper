@@ -13,10 +13,10 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "gooseIcon16.png",
-      "32": "gooseIcon32.png",
-      "48": "gooseIcon64.png",
-      "128": "gooseIcon128.png"
+      "16": "assets/gooseyIcon16.png",
+      "32": "assets/gooseyIcon32.png",
+      "48": "assets/gooseyIcon48.png",
+      "128": "assets/gooseyIcon128.png"
     }
   },
   "background": {
@@ -37,9 +37,9 @@
   ],
 
   "icons": {
-    "16": "gooseIcon16.png",
-    "32": "gooseIcon32.png",
-    "48": "gooseIcon64.png",
-    "128": "gooseIcon128.png"
+    "16": "assets/gooseyIcon16.png",
+    "32": "assets/gooseyIcon32.png",
+    "48": "assets/gooseyIcon48.png",
+    "128": "assets/gooseyIcon128.png"
   }
 }
