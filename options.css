@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Concert+One&display=swap');
+
+body {
+    font-family: Arial, sans-serif;
+    width: 1350px;
+    height: 1075px;
+    background-image: url('https://t3.ftcdn.net/jpg/00/32/22/14/360_F_32221493_P9a74TqHegjfiOA7TpxYDmDiCzNmulDA.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;}
+
+.center{
+    position: absolute;
+    left: 330px;
+    font-size: 80px;
+}
+
+.button{
+    position: relative;
+    left: 450px;
+    top: 200px;
+}
+
+.input{
+    position: relative;
+    top: 200px;
+    left: 430px;
+    padding-right: 150px;
+}
+.instructions{
+    position: relative;
+    top: 120px;
+    left: 370px;
+    font-size: 20px;
+}
+
+#badWebsitesList li{
+    font-family: "Bona Nova";
+    font-size: 20px;
+    position: relative;
+    top: 180px;
+    left: 460px;
+    color: black;
+    margin-bottom: 10px;
+}
+#badWebsitesList button{
+    font-family: "Bona Nova";
+    font-size: 20px;
+    position: relative;
+    left: 20px;
+    color: black;
+    margin-bottom: 10px;
+}
