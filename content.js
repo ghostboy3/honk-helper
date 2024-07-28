@@ -89,6 +89,8 @@ function resetGoose(img){
 }
 resetGoose(img)
 
+var l1,l2,l3;
+
 function sleep(){
     console.log(endPic.substring(endPic.length-1));
     asleep = true;
@@ -96,27 +98,27 @@ function sleep(){
     if(endPic == goosL){
         img.src = lieDownL;
         console.log('zz');
-        setTimeout(() =>{
+        l1 = setTimeout(() =>{
             img.src = sleepL;
         },500);
-        setTimeout(() =>{
+        l2 = setTimeout(() =>{
             console.log('wake up');
             img.src = wakeUpL;
-        },540000);
+        },10000);
     }else{
         img.src = lieDownR;
         console.log('zz');
-        setTimeout(() =>{
+        l1 = setTimeout(() =>{
             img.src = sleepR;
         },500);
-        setTimeout(() =>{
+        l2 =setTimeout(() =>{
             console.log('wake up');
             img.src = wakeUpR;
-        },540000);
+        },10000);
     }
-    setTimeout(() =>{
+    l3 = setTimeout(() =>{
         img.src = endPic;
-    },541000);
+    },11000);
 }
 
 setInterval(() => {
@@ -132,12 +134,20 @@ setInterval(() => {
         const { currentWebsite, startTime } = data;
         console.log(new URL(currentWebsite).hostname);
         if(blacklist.includes(new URL(currentWebsite).hostname)){
-            if(new Date().getTime() - startTime > 600000) {
+            if(new Date().getTime() - startTime > 10000) {
                 honk();
                 startTime = startTime - 2000;
                 chrome.storage.local.set({ startTime: startTime });
             }else if(new Date().getTime() - startTime < 101){
                 sleep();
+            }
+        }else{
+            try {
+                clearTimeout(l1);
+                clearTimeout(l2);
+                clearTimeout(l3);
+            } catch (error) {
+                
             }
         }
     })
