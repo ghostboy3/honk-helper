@@ -1,7 +1,7 @@
 // Geese image
 var loop;
 
-const blacklist = ['instagram.com','discord.com','youtube.com','twitter.com','facebook.com','twitch.tv', 'reddit.com'];
+const blacklist = ['www.instagram.com','discord.com','m.youtube.com','x.com','m.facebook.com','www.twitch.tv', 'www.reddit.com'];
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.action.onClicked.addListener((tab) => {

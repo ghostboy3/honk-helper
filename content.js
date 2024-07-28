@@ -1,8 +1,24 @@
 // Adding Goose
+
+const blacklist = ['www.instagram.com','discord.com','m.youtube.com','x.com','m.facebook.com','www.twitch.tv', 'www.reddit.com'];
+
+const importfr = (path) => {
+    return chrome.runtime.getURL('assets/' + path)
+}
+
+const Honk = new Audio(importfr('honk.mp3'));
 const goosL = chrome.runtime.getURL('assets/goosL.png');
 const goosR = chrome.runtime.getURL('assets/goosR.png');
 const GoosWalkingL = chrome.runtime.getURL('assets/GoosWalkingL.gif');
 const GoosWalkingR = chrome.runtime.getURL('assets/GoosWalkingR.gif');
+const lieDownL = importfr('/lieDownL.gif');
+const lieDownR = importfr('/lieDownR.gif');
+const wakeUpL = importfr('/wakeUpL.gif');
+const wakeUpR = importfr('/wakeUpR.gif');
+const sleepL = importfr('/sleepL.gif');
+const sleepR = importfr('/sleepR.gif');
+var asleep = false;
+var endPic = goosL;
 const img = document.createElement('img');
 img.src = goosL;
 img.style.position = 'fixed';
@@ -79,14 +95,70 @@ function resetGoose(img){
   console.log("RESET");
 }
 resetGoose(img)
-setInterval(() =>{
-  // resetGoose(img)
-  if (document.hasFocus()) {
 
-  console.log("moved");
+var l1,l2,l3;
+
+function sleep(){
+    console.log(endPic.substring(endPic.length-1));
+    asleep = true;
+
+    if(endPic == goosL){
+        img.src = lieDownL;
+        console.log('zz');
+        l1 = setTimeout(() =>{
+            img.src = sleepL;
+        },500);
+        l2 = setTimeout(() =>{
+            console.log('wake up');
+            img.src = wakeUpL;
+        },10000);
+    }else{
+        img.src = lieDownR;
+        console.log('zz');
+        l1 = setTimeout(() =>{
+            img.src = sleepR;
+        },500);
+        l2 =setTimeout(() =>{
+            console.log('wake up');
+            img.src = wakeUpR;
+        },10000);
+    }
+    l3 = setTimeout(() =>{
+        img.src = endPic;
+    },11000);
+}
+
+setInterval(() => {
+  // resetGoose(img)
+  if (document.hasFocus() && !asleep) {
+    console.log("moved");
     moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
   }
 }, 5000)
+
+setInterval(() => {
+    chrome.storage.local.get(["currentWebsite", "startTime"], (data) => {
+        const { currentWebsite, startTime } = data;
+        console.log(new URL(currentWebsite).hostname);
+        if(blacklist.includes(new URL(currentWebsite).hostname)){
+            if(new Date().getTime() - startTime > 10000) {
+                honk();
+                startTime = startTime - 2000;
+                chrome.storage.local.set({ startTime: startTime });
+            }else if(new Date().getTime() - startTime < 101){
+                sleep();
+            }
+        }else{
+            try {
+                clearTimeout(l1);
+                clearTimeout(l2);
+                clearTimeout(l3);
+            } catch (error) {
+                
+            }
+        }
+    })
+}, 100)
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Received message from background:", message);
