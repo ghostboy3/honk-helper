@@ -1,12 +1,11 @@
 // Adding Goose
-const blacklist = ['instagram.com','discord.com','youtube.com','twitter.com','facebook.com','twitch.tv', 'reddit.com'];
+const blacklist = ['www.instagram.com','discord.com','m.youtube.com','x.com','m.facebook.com','www.twitch.tv', 'www.reddit.com'];
 
 const importfr = (path) => {
     return chrome.runtime.getURL('assets/' + path)
 }
 
 const Honk = new Audio(importfr('honk.mp3'));
-var canMove = true;
 const goosL = chrome.runtime.getURL('assets/goosL.png');
 const goosR = chrome.runtime.getURL('assets/goosR.png');
 const GoosWalkingL = chrome.runtime.getURL('assets/GoosWalkingL.gif');
@@ -27,12 +26,8 @@ img.id = 'goose'
 document.body.appendChild(img);
 
 function honk() {
-    if(endPic.substring(endPic.length-1) == 'L'){
-        img.src = importfr('HonkL.gif');
-    }else{
-        img.src = importfr('HonkR.gif');
-    }
     Honk.play();
+    console.log('honk');
 
     img.src = endPic;
 }
@@ -50,7 +45,7 @@ function moveGoose(img, x, y) {
     }
 
     let intervalId = setInterval(function() {
-        if (Math.abs(gooseX - x) <= 1 && Math.abs(gooseY - y) <= 1 && canMove) {
+        if (Math.abs(gooseX - x) <= 1 && Math.abs(gooseY - y) <= 1) {
             img.src = endPic;
             clearInterval(intervalId);
         } else {
@@ -73,21 +68,17 @@ function moveGoose(img, x, y) {
 }
 
 setInterval(() =>{
-    if(canMove){
-        moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
-    }
-    canMove = true;
+    moveGoose(img,Math.floor(Math.random()*(window.innerWidth/7)), Math.floor(Math.random()*(window.innerHeight/7)));
 }, 5000)
 
 setInterval(() => {
     chrome.storage.local.get(["currentWebsite", "startTime"], (data) => {
         const { currentWebsite, startTime } = data;
         console.log(new URL(currentWebsite).hostname);
-        if(new Date().getTime() - startTime > 6000) {
+        if(new Date().getTime() - startTime > 600000 && blacklist.includes(new URL(currentWebsite).hostname)) {
             honk();
             startTime = startTime - 2000;
             chrome.storage.local.set({ startTime: startTime });
-            canMove = false;
         }
     })
-}, 500)
+}, 100)
