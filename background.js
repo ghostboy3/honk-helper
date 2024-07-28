@@ -7,6 +7,8 @@ chrome.runtime.onInstalled.addListener(() => {
     });
   });
 });
+
+
 // timer
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
   const tab = await chrome.tabs.get(activeInfo.tabId);
